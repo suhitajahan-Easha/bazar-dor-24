@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Noto_Serif_Bengali } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/Components/Navbar";
+import Marquee from "@/Components/Marquee";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const  NotoSerifBengali =  Noto_Serif_Bengali({
+  subsets: ["latin","bengali"],
 });
 
 export const metadata: Metadata = {
@@ -21,9 +17,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      data-theme="light"
+      className={`${NotoSerifBengali.className} h-full antialiased max-w`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <Navbar></Navbar>
+        <Marquee></Marquee>
+        {children}
+        </body>
     </html>
   );
 }
