@@ -8,6 +8,7 @@ interface navs {
   nameBn: string;
   image: string;
   today: number;
+  unit: string;
   change: {
     dir: string;
     pct: number;
@@ -20,11 +21,11 @@ const Marquee = async () => {
   );
   const data = await res.json();
 
-  console.log(data);
+  //console.log(data);
   return (
     <div className="mt-5 overflow-hidden border-y border-gray-200 bg-gray-50">
       <MarqueeText direction="right" duration={10} className="py-2">
-        {data.filter((n: navs) => Number(n.change.pct) !== 0).map((n: navs) => (
+        {data.map((n: navs) => (
           <div
             key={n.id}
             className="flex items-center gap-3 px-4 border-r border-gray-200 whitespace-nowrap text-[15px]"
@@ -33,19 +34,32 @@ const Marquee = async () => {
               {n.image} {n.nameBn}
             </span>
 
-            <span>{n.today.toLocaleString("bn-BD")} টাকা/কেজি</span>
+            <span>
+              {n.today.toLocaleString("bn-BD")}
+              {n.unit === "dozen" ? " টাকা/ ডজন" :  n.unit === "litre"? " টাকা/ লিটার": " টাকা/ কেজি"}
+            </span>
 
             <span
               className={`flex items-center ${
-                n.change.dir === "up" ? "text-green-600" : "text-red-600"
+                Number(n.change.pct) === 0
+                  ? "text-gray-500"
+                  : n.change.dir === "up"
+                    ? "text-green-600"
+                    : "text-red-600"
               }`}
             >
-              {n.change.dir === "up" ? (
-                <GoTriangleUp className="text-lg" />
+              {Number(n.change.pct) === 0 ? (
+                "− ০.০%"
               ) : (
-                <RxTriangleDown className="text-lg" />
+                <>
+                  {n.change.dir === "up" ? (
+                    <GoTriangleUp className="text-lg" />
+                  ) : (
+                    <RxTriangleDown className="text-lg" />
+                  )}
+                  {Math.abs(Number(n.change.pct)).toLocaleString("bn-BD")}%
+                </>
               )}
-              {Math.abs(Number(n.change.pct)).toLocaleString("bn-BD")}%
             </span>
           </div>
         ))}

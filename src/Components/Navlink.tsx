@@ -13,7 +13,7 @@ const Navlinks = async () => {
   );
   const data: navs[] = await res.json();
 
-  console.log(data);
+  //console.log(data);
 
   return (
     <div className="flex items-center gap-7 px-4 py-2 ml-5 font-bold">

@@ -6,28 +6,28 @@ const Hero = () => {
     dateStyle: "full",
   });
   return (
-    <div className="max-w-300 mx-auto my-5 px-5">
+    <div className="max-w-300 mx-auto my-5 ">
       <div className="flex items-center justify-between gap-20 rounded-3xl border border-gray-200 bg-[#FCFAFC] px-10 py-7">
         {/* Left side */}
         <div className="flex-1">
-          <span className="inline-block rounded-full bg-green-100 px-3 py-1 text-sm text-[#05893E]">
+          <span className="inline-block rounded-full bg-green-100 px-3 py-1  text-sm text-[#05893E]">
             {date}
           </span>
 
-          <h1 className="mt-2 text-3xl font-bold text-gray-800">
+          <h1 className="mt-6 text-3xl font-bold text-gray-800">
             আজকের বাজারের দাম এক নজরে
           </h1>
 
-          <p className="mt-2 max-w-3xl text-sm leading-6 text-gray-500">
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-gray-500 mb-7">
             চাল, ডাল, তেল, সবজি, মাছ, মাংস, ডিম ও মসলার দাম — বাজারভিত্তিক
             বিস্তারিত, গড়, সর্বনিম্ন-
             <br />
             সর্বাধিক এবং দামের পরিবর্তন এক জায়গায়।
           </p>
 
-          <button className="mt-4 rounded-lg bg-[#05893E] px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-[#047a37]">
+          <a href="#সব পণ্য" className=" rounded-lg bg-[#05893E] px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-[#047a37]">
             সব পণ্য দেখুন
-          </button>
+          </a>
         </div>
 
         {/* Right side */}

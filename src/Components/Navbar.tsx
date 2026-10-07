@@ -7,7 +7,7 @@ const Navbar = () => {
   });
   return (
     <div className=" bg-base-100">
-      <div className="navbar max-w-300 mx-auto px-4 min-h-20">
+      <div className="navbar max-w-300 mx-auto  min-h-20">
         {/* Logo + Brand */}
         <div className="flex-1">
           <div className="flex items-center gap-3">
