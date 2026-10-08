@@ -35,8 +35,11 @@ const Productdetailpage = async ({
 }) => {
   const { id } = await params;
 
+  // const res = await fetch(
+  //   `https://api.api-store.workers.dev/api/bazardor/products/${id}`,
+  // );
   const res = await fetch(
-    `https://api.api-store.workers.dev/api/bazardor/products/${id}`,
+    `https://api.abcz.workers.dev/api/bazardor/products/${id}`,
   );
   console.log("Status:", res.status);
 

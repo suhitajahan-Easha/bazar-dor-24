@@ -23,8 +23,11 @@ interface Product {
 const Categorywisepage = async ({params,}: {params: Promise<{ slug: string }>;}) => {
   const { slug } = await params;
 
-  const res = await fetch(
-    `https://api.api-store.workers.dev/api/bazardor/products?category=${slug}`,
+  // const res = await fetch(
+  //   `https://api.api-store.workers.dev/api/bazardor/products?category=${slug}`,
+  // );
+   const res = await fetch(
+    `https://api.abcz.workers.dev/api/bazardor/products?category=${slug}`,
   );
   const data: Product[] = await res.json();
   const category = data[0];

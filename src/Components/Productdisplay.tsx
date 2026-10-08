@@ -17,7 +17,7 @@ interface navs {
 
 const Productdisplay = ({ product }: { product: navs }) => {
   return (
-    <Link href={`${product.id}`}>
+    <Link href={`/Products/${product.id}`}>
       <div className="rounded-3xl border border-gray-200 bg-[#FCFAFC] p-5">
         {/* Top section */}
         <div className="flex items-center gap-4">

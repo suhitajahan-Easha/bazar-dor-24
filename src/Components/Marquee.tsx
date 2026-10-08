@@ -17,8 +17,12 @@ interface navs {
 }
 
 const Marquee = async () => {
+  //1stapi
+  // const res = await fetch(
+  //   "https://api.api-store.workers.dev/api/bazardor/products",
+  // );
   const res = await fetch(
-    "https://api.api-store.workers.dev/api/bazardor/products",
+    "https://api.abcz.workers.dev/api/bazardor/products",
   );
   const data = await res.json();
 
@@ -27,7 +31,7 @@ const Marquee = async () => {
     <div className="mt-5 overflow-hidden border-y border-gray-200 bg-gray-50">
       <MarqueeText direction="right" duration={10} className="py-2">
         {data.map((n: navs) => (
-          <Link href={`${n.id}`} key={n.id}>
+          <Link href={`/Products/${n.id}`} key={n.id}>
             <div
               className="flex items-center gap-3 px-4 border-r border-gray-200 whitespace-nowrap text-[15px]"
             >
