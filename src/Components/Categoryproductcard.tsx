@@ -3,19 +3,20 @@ import { RxTriangleDown } from "react-icons/rx";
 import { GoTriangleUp } from "react-icons/go";
 import Link from "next/link";
 interface navs {
-  id: string;
-  nameBn: string;
-  image: string;
-  today: number;
-  categoryNameBn: string;
-  unit: string;
-  change: {
+   id: number;
+   nameBn: string;
+   category: string;
+   categoryNameBn: string;
+   unit: string;
+   image:string;
+   today: number;
+   change: {
     dir: string;
     pct: number;
   };
 }
 
-const Productdisplay = ({ product }: { product: navs }) => {
+const Categoryproductcard = ({ product }: { product: navs }) => {
   return (
     <Link href={`${product.id}`}>
       <div className="rounded-3xl border border-gray-200 bg-[#FCFAFC] p-5">
@@ -77,4 +78,4 @@ const Productdisplay = ({ product }: { product: navs }) => {
   );
 };
 
-export default Productdisplay;
+export default Categoryproductcard;

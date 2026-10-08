@@ -43,7 +43,7 @@ const Homeproducts = async () => {
           <RxTriangleDown className="text-2xl text-green-600" />
           আজ দাম কমেছে
         </p>
-        <div className="grid grid-cols-4 gap-3">
+        <div className="grid grid-cols-3 gap-3">
             {data
             .filter((product: navs) => product.change.dir === "down")
             .sort((a:navs, b:navs) => Number(b.change.pct) - Number(a.change.pct))
