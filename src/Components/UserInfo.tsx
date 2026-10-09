@@ -4,19 +4,20 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { RxTriangleDown } from "react-icons/rx";
+import { toast } from "react-toastify";
 
 
 const UserInfo = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const user = session?.user;
-  console.log(user);
   const [isOpen, setIsOpen] = useState(false);
 
   const handlesignout = async () => {
     await signOut({
       fetchOptions: {
         onSuccess: () => {
+          toast.success("আপনি সফলভাবে লগআউট করেছেন। আবার আসবেন! 👋");
           router.push("/auth/Sign-in"); // redirect to login page
         },
       },
@@ -55,7 +56,7 @@ const UserInfo = () => {
               </div>
 
               <Link
-                href="/profile"
+                href="/Profile"
                 onClick={() => setIsOpen(false)}
                 className="mt-2 block rounded-md px-2 py-2 text-xs text-[#35443A] hover:bg-[#F1F6F2]"
               >

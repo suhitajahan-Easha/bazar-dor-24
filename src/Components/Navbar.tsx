@@ -29,9 +29,7 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-
         <UserInfo></UserInfo>
-        
       </div>
 
       {/* Navigation */}
@@ -39,49 +37,6 @@ const Navbar = () => {
         <Navlinks />
       </div>
     </div>
-    // <div className=" ">
-    //   <div className="navbar bg-base-100 shadow-sm max-w-300 mx-auto m-2">
-    //     <div className="flex-1">
-    //          <div className="flex items-center gap-3">
-    //           <div className="bg-[#05893E] p-3 rounded-2xl">
-    //             <Image className=" w-10 h-10"
-    //                src={"/logo-icon.png"}
-    //                alt="logo"
-    //                height={10}
-    //                width={10}
-    //             ></Image></div>
-    //           <div>
-    //             <h1 className="font-bold">বাজার দর</h1>
-    //             <p>{date}</p>
-    //           </div>
-    //         </div>
-
-    //     </div>
-    //     <div className="flex-none  ">
-    //       <button className="btn p-3 px-5 mr-3 rounded-xl ">সাইন ইন</button>
-    //       <button className="btn p-3 px-5 text-white bg-[#05893E] rounded-xl">সাইন আপ</button>
-    //       {/* <ul className="menu menu-horizontal px-1">
-    //         <li>
-    //           <a>Link</a>
-    //         </li>
-    //         <li>
-    //           <details>
-    //             <summary>Parent</summary>
-    //             <ul className="bg-base-100 rounded-t-none p-2">
-    //               <li>
-    //                 <a>Link 1</a>
-    //               </li>
-    //               <li>
-    //                 <a>Link 2</a>
-    //               </li>
-    //             </ul>
-    //           </details>
-    //         </li>
-    //       </ul> */}
-    //     </div>
-    //   </div>
-    //   <div className="max-w-300 mx-auto pl-10"><Navlinks></Navlinks></div>
-    // </div>
   );
 };
 

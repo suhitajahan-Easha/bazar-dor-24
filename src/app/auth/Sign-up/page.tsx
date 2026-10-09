@@ -1,5 +1,5 @@
 "use client";
-import { authClient } from "@/lib/auth-client";
+import { signUp } from "@/lib/auth-client";
 import { FaGoogle } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import { useRouter } from "next/navigation";
@@ -15,38 +15,38 @@ import {
   TextArea,
   TextField,
 } from "@heroui/react";
-import { createAuthClient } from "better-auth/client";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { toast } from "react-toastify";
+
 
 const Signuppage = () => {
   const router = useRouter();
-  const onSubmit = async (e: React.SubmitEvent<HTMLElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
+    const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries()) as {
       name: string;
       email: string;
       password: string;
       image: string;
     };
-    console.log(user)
-    const { data, error } = await authClient.signUp.email({
+    
+    const { data, error } = await signUp.email({
       ...user,
       callbackURL: "/",
     });
-    if (data) {
-      
+   if (data) {
+     toast.success("অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে! 🎉");
       router.push("/");
     }
-    if (error) {
-      console.log(error);
-    }
-  };
+
+  if (error) {
+    toast.error(error.message || "সাইন আপ ব্যর্থ হয়েছে। আবার চেষ্টা করুন।");
+  }}
 
   return (
     <div className="min-h-screen bg-[#F1F6F2] px-4 py-8 sm:py-12">
-      <div className="mx-auto w-full max-w-[420px]">
+      <div className="mx-auto w-full max-w-105">
         <div className="mb-5 text-center">
           <h1 className="text-2xl font-bold tracking-tight text-[#26382D]">
             অ্যাকাউন্ট তৈরি করুন
