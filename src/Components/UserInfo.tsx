@@ -7,6 +7,7 @@ import { RxTriangleDown } from "react-icons/rx";
 import { toast } from "react-toastify";
 
 
+
 const UserInfo = () => {
   const router = useRouter();
   const { data: session } = useSession();
@@ -56,7 +57,7 @@ const UserInfo = () => {
               </div>
 
               <Link
-                href="/Profile"
+                href="/profile"
                 onClick={() => setIsOpen(false)}
                 className="mt-2 block rounded-md px-2 py-2 text-xs text-[#35443A] hover:bg-[#F1F6F2]"
               >
