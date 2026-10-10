@@ -1,9 +1,9 @@
 "use client";
-
+import { useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { signIn } from "@/lib/auth-client";
 import { FaGoogle, FaGithub } from "react-icons/fa";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState,useRef } from "react";
 import {
   Button,
   FieldError,
@@ -18,7 +18,23 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 
 const Signinpage = () => {
+
+  const toastShown = useRef(false);
+  const searchParams = useSearchParams();
   const router = useRouter();
+
+  useEffect(() => {
+    if (searchParams.get("toast") === "login-required" && !toastShown.current) {
+      toastShown.current = true;
+
+      toast.info("এই পেজটি দেখতে আগে সাইন ইন করুন।", {
+        toastId: "login-required",
+      });
+
+      router.replace("/auth/Sign-in", { scroll: false });
+    }
+  }, [searchParams, router]);
+  
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -85,7 +101,7 @@ const Signinpage = () => {
   };
 
   return (
-    <main className="min-h-screen bg-[#F1F6F2] px-4 py-8 sm:py-10">
+    <main className="min-h-screen bg-[#F1F6F2] px-4 pb-5 pt-10 lg:py-10 max-md:px-3 max-md:py-8 max-sm:py-6">
       <div className="mx-auto w-full max-w-105">
         <header className="mb-5 text-center">
           <h1 className="text-2xl font-bold tracking-tight text-[#26382D]">
@@ -96,10 +112,10 @@ const Signinpage = () => {
             ঢুকুন।
           </p>
         </header>
-
         <Form
           onSubmit={onSubmit}
-          className="w-full rounded-xl border border-[#E0E9E2] bg-[#FBFDFC] p-4 sm:p-5"
+          className="w-full rounded-xl border border-[#E0E9E2] bg-[#FBFDFC] 
+          p-4 sm:p-5 max-sm:p-3"
         >
           <Fieldset className="w-full min-w-0">
             <FieldGroup className="gap-3">
@@ -108,7 +124,8 @@ const Signinpage = () => {
                   ইমেইল
                 </Label>
                 <Input
-                  className="h-10 w-full rounded-md border border-[#E1E9E3] bg-white px-3 text-xs text-[#29372D] outline-none focus:border-[#168847] focus:ring-2 focus:ring-[#168847]/10"
+                  className="h-10 w-full rounded-md border border-[#E1E9E3] bg-white px-3 text-xs text-[#29372D] outline-none
+                  focus:border-[#168847] focus:ring-2 focus:ring-[#168847]/10"
                   placeholder="you@example.com"
                   autoComplete="email"
                 />
@@ -150,22 +167,22 @@ const Signinpage = () => {
             <div className="h-px flex-1 bg-[#E1E9E3]" />
           </div>
 
-          <div className="flex justify-center gap-2  font-bold ">
+          <div className="flex w-full justify-center gap-2 font-bold max-sm:flex-col">
             <Button
               type="button"
               onClick={logIn}
-              className="flex h-10 items-center justify-center gap-2 rounded-md border border-[#E1E9E3] bg-white px-2 text-[11px] font-medium text-[#303B33] transition-colors hover:bg-[#F3F7F4]"
+              className="flex h-10 min-w-0 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-md border border-[#E1E9E3] bg-white px-2 text-[11px] font-medium text-[#303B33] transition-colors hover:bg-[#F3F7F4] max-sm:w-full max-sm:flex-none"
             >
-              <FaGoogle className="h-3.5 w-3.5 text-[#4285F4]" />
+              <FaGoogle className="h-3.5 w-3.5 shrink-0 text-[#4285F4]" />
               Google দিয়ে চালিয়ে যান
             </Button>
 
             <Button
               type="button"
               onClick={loggedIn}
-              className="flex h-10 items-center justify-center gap-2 rounded-md border border-[#E1E9E3] bg-white px-2 text-[11px] font-medium text-[#303B33] transition-colors hover:bg-[#F3F7F4]"
+              className="flex h-10 min-w-0 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-md border border-[#E1E9E3] bg-white px-2 text-[11px] font-medium text-[#303B33] transition-colors hover:bg-[#F3F7F4] max-sm:w-full max-sm:flex-none"
             >
-              <FaGithub className="h-3.5 w-3.5 text-[#24292F]" />
+              <FaGithub className="h-3.5 w-3.5 shrink-0 text-[#24292F]" />
               GitHub দিয়ে চালিয়ে যান
             </Button>
           </div>

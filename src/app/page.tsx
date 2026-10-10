@@ -9,6 +9,7 @@ export default function Home() {
       <LoginSuccessToast></LoginSuccessToast>
       <Hero></Hero>
       <Homeproducts></Homeproducts>
+      
 
     </div>
   );

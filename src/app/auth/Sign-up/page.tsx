@@ -1,5 +1,5 @@
 "use client";
-import { signUp,signIn } from "@/lib/auth-client";
+import { signUp, signIn, signOut } from "@/lib/auth-client";
 import { FaGoogle } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import { useRouter } from "next/navigation";
@@ -19,10 +19,39 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 
 
+const signInOutSafely = async () => {
+  return await signOut();
+};
 const Signuppage = () => {
   const router = useRouter();
+  // const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   const formData = new FormData(e.currentTarget);
+  //   const user = Object.fromEntries(formData.entries()) as {
+  //     name: string;
+  //     email: string;
+  //     password: string;
+  //     image: string;
+  //   };
+
+  //   const { data, error } = await signUp.email({
+  //     ...user,
+
+  //     callbackURL: "/auth/Sign-in",
+  //   });
+  //   if (data) {
+  //     toast.success("অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে! 🎉");
+  //     router.push("/auth/Sign-in");
+  //   }
+
+  //   if (error) {
+  //     toast.error(error.message || "সাইন আপ ব্যর্থ হয়েছে। আবার চেষ্টা করুন।");
+  //   }
+  // };
+
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries()) as {
       name: string;
@@ -30,23 +59,34 @@ const Signuppage = () => {
       password: string;
       image: string;
     };
-    
+
     const { data, error } = await signUp.email({
       ...user,
-      
       callbackURL: "/auth/Sign-in",
-     
     });
-   if (data) {
-     toast.success("অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে! 🎉");
-      router.push("/auth/Sign-in");
+
+    if (error) {
+      toast.error(error.message || "সাইন আপ ব্যর্থ হয়েছে। আবার চেষ্টা করুন।");
+      return;
     }
 
-  if (error) {
-    toast.error(error.message || "সাইন আপ ব্যর্থ হয়েছে। আবার চেষ্টা করুন।");
-  }}
+    if (data) {
+      // Clear any session created during registration
+      const { error: signOutError } = await signInOutSafely();
+
+      if (signOutError) {
+        toast.error("সাইন আউট করা যায়নি। আবার চেষ্টা করুন।");
+        return;
+      }
+
+      toast.success("অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে! 🎉");
+      router.replace("/auth/Sign-in");
+      router.refresh();
+    }
+  };
+
   const logIn = async () => {
-        sessionStorage.setItem("login-provider", "Google");
+    sessionStorage.setItem("login-provider", "Google");
 
     try {
       const { error } = await signIn.social({
@@ -61,7 +101,7 @@ const Signuppage = () => {
     } catch {
       toast.error("কিছু একটা সমস্যা হয়েছে। আবার চেষ্টা করুন।");
     }
-      };
+  };
   const loggedIn = async () => {
     sessionStorage.setItem("login-provider", "GitHub");
     try {
@@ -74,15 +114,13 @@ const Signuppage = () => {
         toast.error(error.message || "GitHub দিয়ে লগইন করা যায়নি!");
         return;
       }
-
-      
     } catch {
       toast.error("কিছু একটা সমস্যা হয়েছে। আবার চেষ্টা করুন।");
     }
-}    
+  };
 
   return (
-    <div className="min-h-screen bg-[#F1F6F2] px-4 py-8 sm:py-12">
+    <div className="min-h-screen bg-[#F1F6F2] px-4 py-8 sm:py-12 max-md:px-3 max-sm:py-6">
       <div className="mx-auto w-full max-w-105">
         <div className="mb-5 text-center">
           <h1 className="text-2xl font-bold tracking-tight text-[#26382D]">
@@ -94,10 +132,10 @@ const Signuppage = () => {
         </div>
 
         <Form
-          className="w-full rounded-xl border border-[#E0E9E2] bg-[#FBFDFC] p-4 sm:p-5"
+          className="w-full min-w-0 rounded-xl border border-[#E0E9E2] bg-[#FBFDFC] p-4 sm:p-5 max-sm:p-3"
           onSubmit={onSubmit}
         >
-          <Fieldset className="min-w-0">
+          <Fieldset className="w-full min-w-0">
             <FieldGroup className="gap-3">
               <TextField
                 isRequired
@@ -113,11 +151,12 @@ const Signuppage = () => {
                   নাম
                 </Label>
                 <Input
-                  className="h-10 w-full rounded-md border border-[#E1E9E3] bg-white px-3 text-xs text-[#29372D] outline-none placeholder:text-[#9AA49C] focus:border-[#168847] focus:ring-2 focus:ring-[#168847]/10"
+                  className="h-10 w-full min-w-0 rounded-md border border-[#E1E9E3] bg-white px-3 text-xs text-[#29372D] outline-none placeholder:text-[#9AA49C] focus:border-[#168847] focus:ring-2 focus:ring-[#168847]/10"
                   placeholder="যেমন: রহিম উদ্দিন"
                 />
                 <FieldError className="mt-1 text-xs text-red-600" />
               </TextField>
+
               <TextField
                 name="image"
                 type="url"
@@ -139,17 +178,18 @@ const Signuppage = () => {
                   প্রোফাইল ছবির URL (ঐচ্ছিক)
                 </Label>
                 <Input
-                  className="h-10 w-full rounded-md border border-[#E1E9E3] bg-white px-3 text-xs text-[#29372D] outline-none placeholder:text-[#9AA49C] focus:border-[#168847] focus:ring-2 focus:ring-[#168847]/10"
+                  className="h-10 w-full min-w-0 rounded-md border border-[#E1E9E3] bg-white px-3 text-xs text-[#29372D] outline-none placeholder:text-[#9AA49C] focus:border-[#168847] focus:ring-2 focus:ring-[#168847]/10"
                   placeholder="https://example.com/profile.jpg"
                 />
                 <FieldError className="mt-1 text-xs text-red-600" />
               </TextField>
+
               <TextField isRequired name="email" type="email">
                 <Label className="mb-1 block text-xs font-medium text-[#35443A]">
                   ইমেইল
                 </Label>
                 <Input
-                  className="h-10 w-full rounded-md border border-[#E1E9E3] bg-white px-3 text-xs text-[#29372D] outline-none placeholder:text-[#9AA49C] focus:border-[#168847] focus:ring-2 focus:ring-[#168847]/10"
+                  className="h-10 w-full min-w-0 rounded-md border border-[#E1E9E3] bg-white px-3 text-xs text-[#29372D] outline-none placeholder:text-[#9AA49C] focus:border-[#168847] focus:ring-2 focus:ring-[#168847]/10"
                   placeholder="you@example.com"
                 />
                 <FieldError className="mt-1 text-xs text-red-600" />
@@ -177,14 +217,14 @@ const Signuppage = () => {
                   পাসওয়ার্ড
                 </Label>
                 <Input
-                  className="h-10 w-full rounded-md border border-[#E1E9E3] bg-white px-3 text-xs text-[#29372D] outline-none placeholder:text-[#9AA49C] focus:border-[#168847] focus:ring-2 focus:ring-[#168847]/10"
+                  className="h-10 w-full min-w-0 rounded-md border border-[#E1E9E3] bg-white px-3 text-xs text-[#29372D] outline-none placeholder:text-[#9AA49C] focus:border-[#168847] focus:ring-2 focus:ring-[#168847]/10"
                   placeholder="কমপক্ষে ৮ অক্ষর"
                 />
                 <FieldError className="mt-1 text-xs text-red-600" />
               </TextField>
             </FieldGroup>
 
-            <Fieldset.Actions className="mt-4">
+            <Fieldset.Actions className="mt-4 w-full">
               <Button
                 type="submit"
                 className="w-full rounded-md bg-[#078A43] px-4 py-3 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-[#067638] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#078A43]"
@@ -194,39 +234,33 @@ const Signuppage = () => {
             </Fieldset.Actions>
           </Fieldset>
 
-          <div className="my-4 flex items-center gap-3">
+          <div className="my-4 flex w-full items-center gap-3">
             <div className="h-px flex-1 bg-[#E1E9E3]" />
             <span className="text-[11px] text-[#778279]">অথবা</span>
             <div className="h-px flex-1 bg-[#E1E9E3]" />
           </div>
 
-          <div className="flex gap-3 justify-center">
+          <div className="flex w-full min-w-0 justify-center gap-3 max-sm:flex-col">
             <Button
               type="button"
               onClick={logIn}
-              className="flex items-center justify-center gap-2 rounded-md border
-               border-[#E1E9E3] bg-white px-2 py-3 text-[11px] font-medium text-[#303B33]
-                transition-colors hover:bg-[#F3F7F4]"
+              className="flex min-w-0 flex-1 items-center justify-center gap-2 rounded-md border border-[#E1E9E3] bg-white px-2 py-3 text-[11px] font-medium text-[#303B33] transition-colors hover:bg-[#F3F7F4] max-sm:w-full max-sm:flex-none"
             >
-              <span className="font-bold text-[#4285F4]">
-                <FaGoogle className="h-4 w-4" />
-              </span>
-              Google দিয়ে চালিয়ে যান
+              <FaGoogle className="h-4 w-4 shrink-0 text-[#4285F4]" />
+              <span>Google দিয়ে চালিয়ে যান</span>
             </Button>
 
             <Button
               type="button"
               onClick={loggedIn}
-              className="flex items-center justify-center gap-2 rounded-md border border-[#E1E9E3] bg-white px-2 py-3 text-[11px] font-medium text-[#303B33] transition-colors hover:bg-[#F3F7F4]"
+              className="flex min-w-0 flex-1 items-center justify-center gap-2 rounded-md border border-[#E1E9E3] bg-white px-2 py-3 text-[11px] font-medium text-[#303B33] transition-colors hover:bg-[#F3F7F4] max-sm:w-full max-sm:flex-none"
             >
-              <span className="font-bold text-[#24292F]">
-                <FaGithub />
-              </span>
-              GitHub দিয়ে চালিয়ে যান
+              <FaGithub className="h-4 w-4 shrink-0 text-[#24292F]" />
+              <span>GitHub দিয়ে চালিয়ে যান</span>
             </Button>
           </div>
 
-          <p className="mt-4 text-center text-xs text-[#778279]">
+          <p className="mt-4 w-full text-center text-xs text-[#778279]">
             অ্যাকাউন্ট আছে?{" "}
             <Link
               href="/auth/Sign-in"
