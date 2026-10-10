@@ -1,5 +1,5 @@
 "use client";
-import { signUp } from "@/lib/auth-client";
+import { signUp,signIn } from "@/lib/auth-client";
 import { FaGoogle } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import { useRouter } from "next/navigation";
@@ -33,16 +33,53 @@ const Signuppage = () => {
     
     const { data, error } = await signUp.email({
       ...user,
-      callbackURL: "/",
+      
+      callbackURL: "/auth/Sign-in",
+     
     });
    if (data) {
      toast.success("অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে! 🎉");
-      router.push("/");
+      router.push("/auth/Sign-in");
     }
 
   if (error) {
     toast.error(error.message || "সাইন আপ ব্যর্থ হয়েছে। আবার চেষ্টা করুন।");
   }}
+  const logIn = async () => {
+        sessionStorage.setItem("login-provider", "Google");
+
+    try {
+      const { error } = await signIn.social({
+        provider: "google",
+        callbackURL: "/",
+      });
+
+      if (error) {
+        toast.error(error.message || "গুগল দিয়ে লগইন করা যায়নি!");
+        return;
+      }
+    } catch {
+      toast.error("কিছু একটা সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+    }
+      };
+  const loggedIn = async () => {
+    sessionStorage.setItem("login-provider", "GitHub");
+    try {
+      const { error } = await signIn.social({
+        provider: "github",
+        callbackURL: "/",
+      });
+
+      if (error) {
+        toast.error(error.message || "GitHub দিয়ে লগইন করা যায়নি!");
+        return;
+      }
+
+      
+    } catch {
+      toast.error("কিছু একটা সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+    }
+}    
 
   return (
     <div className="min-h-screen bg-[#F1F6F2] px-4 py-8 sm:py-12">
@@ -166,6 +203,7 @@ const Signuppage = () => {
           <div className="flex gap-3 justify-center">
             <Button
               type="button"
+              onClick={logIn}
               className="flex items-center justify-center gap-2 rounded-md border
                border-[#E1E9E3] bg-white px-2 py-3 text-[11px] font-medium text-[#303B33]
                 transition-colors hover:bg-[#F3F7F4]"
@@ -178,6 +216,7 @@ const Signuppage = () => {
 
             <Button
               type="button"
+              onClick={loggedIn}
               className="flex items-center justify-center gap-2 rounded-md border border-[#E1E9E3] bg-white px-2 py-3 text-[11px] font-medium text-[#303B33] transition-colors hover:bg-[#F3F7F4]"
             >
               <span className="font-bold text-[#24292F]">

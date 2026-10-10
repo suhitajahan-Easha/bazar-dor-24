@@ -9,8 +9,6 @@ export async function proxy(request: NextRequest) {
 
     if(!session) {
         return NextResponse.redirect(new URL("/auth/Sign-in", request.url));
-        
-
     }
     console.log(session)
     return NextResponse.next();
