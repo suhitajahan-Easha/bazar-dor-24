@@ -186,23 +186,15 @@ const Signinpage = () => {
               GitHub দিয়ে চালিয়ে যান
             </Button>
           </div>
-
           <p className="mt-4 w-full text-center text-xs text-[#778279]">
             অ্যাকাউন্ট নেই?{" "}
-            <Link
-              href="/auth/Sign-up"
-              className="font-semibold text-[#078A43] hover:underline"
-            >
+            <Link href="/auth/Sign-up" className="font-semibold text-[#078A43] hover:underline">
               সাইন আপ করুন
             </Link>
           </p>
         </Form>
-
         <div className="mt-5 text-center">
-          <Link
-            href="/"
-            className="text-xs text-[#879189] transition-colors hover:text-[#078A43]"
-          >
+          <Link href="/" className="text-xs text-[#879189] transition-colors hover:text-[#078A43]" >
             ← হোম পেজে ফিরে যান
           </Link>
         </div>
